@@ -2,7 +2,7 @@ pool: Default
 jobs:
 - job: sast_scan
   steps:
-  - script: bandit -f json -o sast-result.json -r app/app.py || true
+  - script: /root/findsecbugs.sh -xargs -progress -html  -h -output $PWD/findsecbugs_report.html target/dvja-1.0-SNAPSHOT.war || true
   - task: CopyFiles@2
     inputs:
       sourceFolder: '$(Build.SourcesDirectory)'
@@ -15,7 +15,7 @@ jobs:
 
 - job: sca_scan
   steps:
-  - script: pyraider check -f app/requirements.txt -e json sca-results.json || true
+  - script: /root/dependency-check/bin/dependency-check.sh --project "DVJA" --scan "target/dvja-1.0-SNAPSHOT.war" --format "HTML" --disableBundleAudit --disableRubygems --disableNuspec || true
   - task: CopyFiles@2
     inputs:
       sourceFolder: '$(Build.SourcesDirectory)'
