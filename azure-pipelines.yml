@@ -3,6 +3,7 @@ jobs:
 - job: build
   steps:
   - script: mvn clean install
+  
 - job: sast_scan
   steps:
   - script: /root/findsecbugs.sh -xargs -progress -html  -h -output $PWD/findsecbugs_report.html target/dvja-1.0-SNAPSHOT.war || true
